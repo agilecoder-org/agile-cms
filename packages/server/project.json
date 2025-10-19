@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "root": "packages/server",
+  "sourceRoot": "packages/server/src",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn dev",
+        "cwd": "packages/server"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn build",
+        "cwd": "packages/server"
+      }
+    }
+  }
+}

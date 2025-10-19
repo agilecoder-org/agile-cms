@@ -2,7 +2,20 @@
   "name": "@agile-cms/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "docker:up": "docker compose -f docker/stacks/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/stacks/docker-compose.yml down",
+    "docker:logs": "docker compose -f docker/stacks/docker-compose.yml logs -f",
+    "docker:status": "docker compose -f docker/stacks/docker-compose.yml ps",
+    "docker:restart": "npm run docker:down && npm run docker:up",
+    "predev": "npm run docker:up",
+    "dev": "nx run-many --target=dev --parallel --output-style=stream",
+    "dev:services": "docker compose -f docker/stacks/docker-compose.yml up",
+    "postdev": "echo 'Dev stopped. Run \"npm run docker:down\" to stop services.'",
+    "build": "nx run-many --target=build --all --output-style=stream",
+    "lint": "nx run-many --target=lint --all --output-style=stream",
+    "test": "nx run-many --target=test --all --output-style=stream"
+  },
   "private": true,
   "dependencies": {},
   "devDependencies": {
