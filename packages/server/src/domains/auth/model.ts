@@ -22,7 +22,7 @@ const UserSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
       minlength: [8, "Password must be at least 8 characters long"],
-      select: false, // Don't include password in query results by default
+      select: false,
     },
     last_login: {
       type: Date,

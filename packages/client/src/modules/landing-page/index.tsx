@@ -1,15 +1,14 @@
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Sparkles, ShieldCheck, LayoutGrid, Zap, Code, Users, Lock, FileText, Settings, Globe, ChevronRight } from "lucide-react"
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 
 const LandingPage = () => {
-  const [activeSection, setActiveSection] = useState('home');
+  const navigate = useNavigate();
 
   const handleNavigation = (section: any) => {
-    setActiveSection(section);
-    console.log(`Navigating to: ${section}`);
+    navigate(`/${section}`)
   };
 
   const fadeInUp = {

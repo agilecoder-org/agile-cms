@@ -15,6 +15,8 @@ import PostForm from "./modules/dashboard/blog/pages/PostForm"
 // Component Imports
 import ProtectedRoute from "./components/layouts/ProtectedRoute"
 import { ThemeProvider } from "./components/theme-provider"
+import PrivacyPolicy from "./modules/compliance/privacy-policy"
+import TermsOfService from "./modules/compliance/terms-of-service"
 
 const App = () => {
   return (
@@ -23,6 +25,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<Authentication />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
 

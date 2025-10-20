@@ -5,7 +5,7 @@ import { cronJobs } from "./jobs/cron";
 import logger from "./configs/logger";
 
 dotenv.config();
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 3001;
 
 connectDatabase(() => {
   app.listen(PORT, () => {
