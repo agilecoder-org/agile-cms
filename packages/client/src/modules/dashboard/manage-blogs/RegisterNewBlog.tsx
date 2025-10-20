@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Mail, Globe, FileText, LinkIcon, ListChecks } from "lucide-react";
 import { createBlogSite } from "@/services/manage-blogs/newBlog";
+import { toast } from "sonner";
 
 const RegisterNewBlog = () => {
   const devEnv = import.meta.env.VITE_ENV;
@@ -37,13 +38,22 @@ const RegisterNewBlog = () => {
     language: "",
     index: true,
     canonical_url: "",
+    useSiteInfoForSEO: true, // new checkbox
   });
 
+  // Automatically fill SEO fields if checkbox is checked
+  useEffect(() => {
+    if (form.useSiteInfoForSEO) {
+      setForm((prev) => ({
+        ...prev,
+        meta_title: prev.title,
+        meta_description: prev.description,
+      }));
+    }
+  }, [form.title, form.description, form.useSiteInfoForSEO]);
+
   const handleChange = (field: string, value: string | boolean) => {
-    setForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async () => {
@@ -55,7 +65,8 @@ const RegisterNewBlog = () => {
 
       await createBlogSite(payload);
 
-      alert("Blog created successfully!");
+      toast.success("Blog created successfully!");
+
       setForm({
         title: "",
         domain: "",
@@ -69,10 +80,11 @@ const RegisterNewBlog = () => {
         language: "",
         index: true,
         canonical_url: "",
+        useSiteInfoForSEO: true,
       });
     } catch (error) {
       console.error("Error creating blog:", error);
-      alert("Failed to create blog. Please try again!");
+      toast.error("Failed to create blog. Please try again!");
     }
   };
 
@@ -91,7 +103,6 @@ const RegisterNewBlog = () => {
           <div>
             <Label>Site Name</Label>
             <Input
-              type="text"
               value={form.title}
               onChange={(e) => handleChange("title", e.target.value)}
               placeholder="Enter your blog name"
@@ -101,7 +112,6 @@ const RegisterNewBlog = () => {
           <div>
             <Label>Domain</Label>
             <Input
-              type="text"
               value={form.domain}
               onChange={(e) => handleChange("domain", e.target.value)}
               placeholder="yourblog.com"
@@ -121,7 +131,6 @@ const RegisterNewBlog = () => {
             <Label>API Endpoint</Label>
             <div className="flex items-center gap-2">
               <Input
-                type="text"
                 value={form.endpoint}
                 onChange={(e) => handleChange("endpoint", e.target.value)}
                 placeholder="yourblog"
@@ -154,18 +163,23 @@ const RegisterNewBlog = () => {
           </h2>
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="col-span-full flex items-center gap-2">
+            <Checkbox
+              id="useSiteInfoForSEO"
+              checked={form.useSiteInfoForSEO}
+              onCheckedChange={(checked) => handleChange("useSiteInfoForSEO", Boolean(checked))}
+            />
+            <label htmlFor="useSiteInfoForSEO">Use Site Name & Description for SEO</label>
+          </div>
           <div className="col-span-full">
             <Label>Meta Title</Label>
             <Input
-              type="text"
               value={form.meta_title}
               onChange={(e) => handleChange("meta_title", e.target.value)}
               placeholder="Search engine title"
               className="mt-2"
+              disabled={form.useSiteInfoForSEO}
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Recommended length: 50–60 characters
-            </p>
           </div>
           <div className="col-span-full">
             <Label>Meta Description</Label>
@@ -174,23 +188,17 @@ const RegisterNewBlog = () => {
               onChange={(e) => handleChange("meta_description", e.target.value)}
               placeholder="Description for search engines"
               className="mt-2"
+              disabled={form.useSiteInfoForSEO}
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Recommended length: 150–160 characters
-            </p>
           </div>
           <div className="col-span-full">
             <Label>Keywords</Label>
             <Input
-              type="text"
               value={form.meta_keywords}
               onChange={(e) => handleChange("meta_keywords", e.target.value)}
               placeholder="keyword1, keyword2, keyword3"
               className="mt-2"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Separate with commas (5–10 keywords recommended)
-            </p>
           </div>
           <div>
             <Label>Primary Category</Label>
@@ -199,16 +207,9 @@ const RegisterNewBlog = () => {
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="technology">Technology</SelectItem>
-                <SelectItem value="business">Business</SelectItem>
-                <SelectItem value="lifestyle">Lifestyle</SelectItem>
-                <SelectItem value="travel">Travel</SelectItem>
-                <SelectItem value="food">Food</SelectItem>
-                <SelectItem value="health">Health & Fitness</SelectItem>
-                <SelectItem value="finance">Finance</SelectItem>
-                <SelectItem value="education">Education</SelectItem>
-                <SelectItem value="entertainment">Entertainment</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                {["technology","business","lifestyle","travel","food","health","finance","education","entertainment","other"].map(c => (
+                  <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -219,13 +220,9 @@ const RegisterNewBlog = () => {
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="es">Spanish</SelectItem>
-                <SelectItem value="fr">French</SelectItem>
-                <SelectItem value="de">German</SelectItem>
-                <SelectItem value="zh">Chinese</SelectItem>
-                <SelectItem value="ja">Japanese</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                {["en","es","fr","de","zh","ja","other"].map(l => (
+                  <SelectItem key={l} value={l}>{l.toUpperCase()}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -235,16 +232,13 @@ const RegisterNewBlog = () => {
               checked={form.index}
               onCheckedChange={(checked) => handleChange("index", Boolean(checked))}
             />
-            <label htmlFor="index">
-              Allow search engines to index this blog
-            </label>
+            <label htmlFor="index">Allow search engines to index this blog</label>
           </div>
           <div className="col-span-full">
             <Label>Canonical URL</Label>
             <div className="flex items-center">
               <LinkIcon className="w-4 h-4 mr-2" />
               <Input
-                type="text"
                 value={form.canonical_url}
                 onChange={(e) => handleChange("canonical_url", e.target.value)}
                 placeholder="https://example.com"

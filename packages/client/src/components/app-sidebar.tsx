@@ -20,26 +20,26 @@ import {
 import useAuth from "@/zustand/authStore";
 
 const navMain = [
-  {
-    title: "Analytics",
-    url: "/analytics/dashboard",
-    isActive: true,
-    icon: ChartPie,
-    items: [
-      {
-        title: "Dashboard",
-        url: "/analytics/dashboard",
-      },
-      {
-        title: "Reports",
-        url: "/analytics/reports",
-      },
-      {
-        title: "Settings",
-        url: "/analytics/settings",
-      },
-    ],
-  },
+  // {
+  //   title: "Analytics",
+  //   url: "/analytics/dashboard",
+  //   isActive: true,
+  //   icon: ChartPie,
+  //   items: [
+  //     {
+  //       title: "Dashboard",
+  //       url: "/analytics/dashboard",
+  //     },
+  //     {
+  //       title: "Reports",
+  //       url: "/analytics/reports",
+  //     },
+  //     {
+  //       title: "Settings",
+  //       url: "/analytics/settings",
+  //     },
+  //   ],
+  // },
   {
     title: "Manage Blogs",
     url: "#",
@@ -53,10 +53,10 @@ const navMain = [
         title: "API Settings",
         url: "/manage-blogs/api-settings",
       },
-      {
-        title: "Permissions",
-        url: "/manage-blogs/permissions",
-      },
+      // {
+      //   title: "Permissions",
+      //   url: "/manage-blogs/permissions",
+      // },
     ],
   },
 ];
