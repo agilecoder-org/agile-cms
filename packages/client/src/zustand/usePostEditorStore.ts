@@ -42,8 +42,14 @@ export const usePostEditorStore = create<PostEditorStore>()(
       date: undefined,
       loading: false,
 
-      setBlogPost: (post) =>
-        set((state) => ({ blogPost: { ...state.blogPost, ...post } })),
+      setBlogPost: (post) => {
+        // Normalize category to string _id
+        const normalizedPost = {
+          ...post,
+          category: post.category && typeof post.category === "object" ? post.category._id : post.category,
+        };
+        set((state) => ({ blogPost: { ...state.blogPost, ...normalizedPost } }));
+      },
       setDate: (date) => set(() => ({ date })),
       setLoading: (loading) => set(() => ({ loading })),
       reset: () => set(() => ({ blogPost: initialPost, date: undefined, loading: false })),

@@ -29,7 +29,15 @@ const PostForm = () => {
       setLoading(true);
       try {
         const post = await getPostById(id);
-        setBlogPost(post.data);
+        const postData = post.data;
+
+        // Normalize category to string _id for store
+        const normalizedPost = {
+          ...postData,
+          category: postData.category?._id || "",
+        };
+
+        setBlogPost(normalizedPost);
       } catch (error) {
         console.error("Failed to load post:", error);
         toast.error("Error loading post");
@@ -53,7 +61,7 @@ const PostForm = () => {
           slug: blogPost.slug,
           description: blogPost.description,
           content: blogPost.content,
-          status: blogPost.status,
+          status: "published",
           category: blogPost.category,
           is_featured: blogPost.is_featured,
           is_scheduled: blogPost.is_scheduled,
