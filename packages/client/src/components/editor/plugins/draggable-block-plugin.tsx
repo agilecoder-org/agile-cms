@@ -13,8 +13,8 @@ export function DraggableBlockPlugin({
 }: {
   anchorElem: HTMLElement | null
 }): JSX.Element | null {
-  const menuRef = useRef<HTMLDivElement>(null)
-  const targetLineRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLElement>(null)
+  const targetLineRef = useRef<HTMLElement>(null)
 
   if (!anchorElem) {
     return null
@@ -23,11 +23,11 @@ export function DraggableBlockPlugin({
   return (
     <DraggableBlockPlugin_EXPERIMENTAL
       anchorElem={anchorElem}
-      menuRef={menuRef}
-      targetLineRef={targetLineRef}
+      menuRef={menuRef as any}
+      targetLineRef={targetLineRef as any}
       menuComponent={
         <div
-          ref={menuRef}
+          ref={menuRef as any}
           className="draggable-block-menu absolute top-0 left-0 cursor-grab rounded-sm px-[1px] py-0.5 opacity-0 will-change-transform hover:bg-gray-100 active:cursor-grabbing"
         >
           <GripVerticalIcon className="size-4 opacity-30" />
@@ -35,7 +35,7 @@ export function DraggableBlockPlugin({
       }
       targetLineComponent={
         <div
-          ref={targetLineRef}
+          ref={targetLineRef as any}
           className="bg-secondary-foreground pointer-events-none absolute top-0 left-0 h-1 opacity-0 will-change-transform"
         />
       }

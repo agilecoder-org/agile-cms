@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  ChartPie,
   Newspaper,
   SquarePen,
 } from "lucide-react";

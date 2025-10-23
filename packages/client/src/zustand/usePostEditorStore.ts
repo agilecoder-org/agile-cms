@@ -28,6 +28,8 @@ const initialPost: Post = {
   slug: "future-of-web-development",
   description: "",
   content: initialValue,
+  blog: { _id: "" },
+  author: { _id: "" },
   header_img_url: "",
   category: "",
   status: "draft",
@@ -46,7 +48,7 @@ export const usePostEditorStore = create<PostEditorStore>()(
         // Normalize category to string _id
         const normalizedPost = {
           ...post,
-          category: post.category && typeof post.category === "object" ? post.category._id : post.category,
+          category: post.category && typeof post.category === "object" ? (post.category as any)._id : post.category,
         };
         set((state) => ({ blogPost: { ...state.blogPost, ...normalizedPost } }));
       },

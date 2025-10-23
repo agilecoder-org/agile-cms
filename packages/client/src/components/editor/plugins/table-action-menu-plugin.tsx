@@ -7,7 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import * as React from "react"
 import {
   JSX,
   ReactPortal,
@@ -255,7 +254,7 @@ function TableActionMenu({
 
         const tableObserver = getTableObserverFromTableElement(tableElement)
         if (tableObserver !== null) {
-          tableObserver.clearHighlight()
+          tableObserver.$clearHighlight()
         }
 
         tableNode.markDirty()

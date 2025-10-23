@@ -1,4 +1,3 @@
-import * as React from "react"
 import { JSX, useEffect, useState } from "react"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import {
