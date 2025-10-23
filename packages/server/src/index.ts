@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import vhost from "vhost";
 import { corsFix } from "./libs/cors";
 import { requestBodyParser } from "./libs/bodyParser";
@@ -18,21 +18,16 @@ dotenv.config();
 
 const app = express();
 
+const HOST = process.env.HOST || "localhost";
+
 app.use(httpLogger);
 app.use(corsFix);
 app.use(requestBodyParser);
 app.use(cookieParser);
 app.use(collectHostDetails);
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  const host = req.headers.host || "";
-  
-  if (host.startsWith("localhost") || host === "cms-server-agilecoder.vercel.app") {
-    mainRouter(req, res, next);
-  } else {
-    multiTenantPostRouter(req, res, next);
-  }
-});
+app.use(vhost(HOST, mainRouter as any));
+app.use(vhost(`*.${HOST}`, multiTenantPostRouter as any));
 
 app.get("/", (req, res) => {
   res.send("The Server is Running Fine 🚀");
@@ -43,7 +38,7 @@ const PORT = Number(process.env.PORT) || 3001;
 connectDatabase(() => {
   if (process.env.VERCEL !== "1") {
     app.listen(PORT, () => {
-      logger.info(`Server is running at http://localhost:${PORT} 🚀`);
+      logger.info(`Server is running at http://${HOST}:${PORT} 🚀`);
     });
   }
   
